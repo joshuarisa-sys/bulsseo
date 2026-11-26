@@ -308,6 +308,15 @@ a.btn{display:block;text-align:center;text-decoration:none}
 .site-foot dt{font-weight:700}
 .site-foot dd{margin:0;word-break:keep-all}
 .sf-copy{font-size:12px}
+
+.care-more{display:flex;flex-direction:column}
+.care-more>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;min-height:48px;border:1px solid var(--line);border-radius:14px;background:var(--surface);font-weight:700;font-size:16px;color:var(--ink)}
+.care-more>summary::-webkit-details-marker{display:none}
+.care-more>summary::after{content:"▾";font-size:14px;transition:transform .2s}
+.care-more[open]>summary::after{transform:rotate(180deg)}
+.care-more .cm-close,.care-more[open] .cm-open{display:none}
+.care-more[open] .cm-close{display:inline}
+.care-more-in{display:flex;flex-direction:column;gap:14px;margin-top:14px}
 </style>
 </head>
 <body>
@@ -482,6 +491,9 @@ a.btn{display:block;text-align:center;text-decoration:none}
       <p class="path">농사로 → 연구정보 → 곤충표본관 → 화분매개곤충 → 농약적용검색</p>
     </article>
 
+    <details class="care-more">
+      <summary><span class="cm-open">관리법 2~5 더 보기</span><span class="cm-close">접기</span></summary>
+      <div class="care-more-in">
     <article class="tip">
       <h3><span class="ico" aria-hidden="true">🌼</span><span class="tt"><small>관리법 2</small>꽃가루(화분)는 꼭 필요할 때만</span></h3>
       <div class="when">
@@ -520,6 +532,8 @@ a.btn{display:block;text-align:center;text-decoration:none}
         <div><span aria-hidden="true">☀️</span><b>15~25℃</b><small>가장 활발해요</small></div>
       </div>
     </article>
+      </div>
+    </details>
   </section>
 
 
