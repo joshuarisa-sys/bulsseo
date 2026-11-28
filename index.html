@@ -430,6 +430,10 @@ a.btn{display:block;text-align:center;text-decoration:none}
 .crop{word-break:keep-all}
 .prer .pshare{margin-top:8px;font-size:16px;min-height:50px}
 #precheck{scroll-margin-top:12px}
+.prechk{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:26px}
+.prechk>header h2{margin:0;font-size:22px;line-height:1.3;letter-spacing:-.02em;word-break:keep-all}
+.prechk>header p{margin:6px 0 0;color:var(--muted);font-size:15px;line-height:1.6;word-break:keep-all}
+.prechk .pre{background:var(--surface);padding:16px}
 </style>
 </head>
 <body>
@@ -539,6 +543,20 @@ a.btn{display:block;text-align:center;text-decoration:none}
     <p class="anote">답한 내용이 문자에 자동으로 담겨요. 벌통 사진을 같이 보내 주시면 더 정확해요.</p>
   </section>
 
+  <section class="prechk" id="precheck" aria-labelledby="preT">
+    <header>
+      <h2 id="preT">🔎 농약 치기 전에 확인</h2>
+      <p>뿌릴 약 이름을 넣으면 벌통을 언제 다시 넣으면 되는지 알려 드려요.</p>
+    </header>
+    <div class="pre">
+        <div class="prec" id="preCrop" role="group" aria-label="작목"></div>
+        <label class="af"><span>약 이름</span><input id="preQ" type="search" list="preList" autocomplete="off" placeholder="예: 팬텀, 라이몬"></label>
+        <datalist id="preList"></datalist>
+        <label class="af"><span>뿌리는 날</span><input id="preDate" type="date"></label>
+        <div class="preout" id="preOut" aria-live="polite"></div>
+      </div>
+  </section>
+
   <section class="care" aria-labelledby="careT">
     <header>
       <h2 id="careT">🐝 뒤영벌 관리법 5가지</h2>
@@ -560,15 +578,6 @@ a.btn{display:block;text-align:center;text-decoration:none}
         <li><span aria-hidden="true">📍</span>같은 자리에<br>다시 놓기</li>
       </ol>
       <div class="warnbox">📄 <b>농약 설명서</b>와 아래 작목별 안전방사기간을 꼭 확인해 주세요.</div>
-      <div class="pre" id="precheck">
-        <h4>🔎 농약 치기 전에 확인</h4>
-        <p class="psm">뿌릴 약 이름을 넣으면 벌통을 언제 다시 넣으면 되는지 알려 드려요.</p>
-        <div class="prec" id="preCrop" role="group" aria-label="작목"></div>
-        <label class="af"><span>약 이름</span><input id="preQ" type="search" list="preList" autocomplete="off" placeholder="예: 팬텀, 라이몬"></label>
-        <datalist id="preList"></datalist>
-        <label class="af"><span>뿌리는 날</span><input id="preDate" type="date"></label>
-        <div class="preout" id="preOut" aria-live="polite"></div>
-      </div>
       <p class="sub">👇 작목별 농약 안전방사기간 보기</p>
       <div class="cropbtns" id="pestBtns"></div>
       <a class="extlink" href="https://www.nongsaro.go.kr/portal/ps/psc/pscc/insectAgchApplcLst.ps?menuId=PS00207" target="_blank" rel="noopener">🔎 목록에 없는 농약은 농사로에서 검색</a>
