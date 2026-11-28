@@ -488,6 +488,11 @@ section.view{border-top:0!important;padding-top:0!important}
 .snsb.ig{background:linear-gradient(45deg,#F58529,#DD2A7B 55%,#8134AF)}
 .snsb.bl{background:#03A94D}
 .sns.sf .snsb{min-height:48px;font-size:15.5px}
+/* iOS Safari: date inputs ignore width:100% unless appearance is reset */
+input[type=date]{-webkit-appearance:none;appearance:none;display:block;box-sizing:border-box;max-width:100%;min-width:0;width:100%}
+.opt input[type=date]{width:auto;max-width:100%}
+input[type=date]::-webkit-date-and-time-value{text-align:left;margin:0}
+.af,.pre,.ocard,.sheet .way{min-width:0}
 </style>
 </head>
 <body>
