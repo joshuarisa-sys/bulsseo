@@ -744,15 +744,11 @@ a.btn{display:block;text-align:center;text-decoration:none}
 
 <div class="sheet-bg" id="sheetBg" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
-    <h2 id="sheetTitle">얼마나 구매할까요?</h2>
+    <h2 id="sheetTitle" tabindex="-1">얼마나 구매할까요?</h2>
     <div class="pick" id="pick"></div>
     <p class="hint" id="hint"></p>
-    <div class="way">
-      <h3>방법 1 · 네이버 스마트스토어</h3>
-      <a class="btn primary" id="go" href="https://smartstore.naver.com/sujungbul/products/4937483529" target="_blank" rel="noopener">스마트스토어에서 구매하기</a>
-    </div>
     <div class="way sms">
-      <h3>방법 2 · 문자로 주문하고 계좌이체</h3>
+      <h3>방법 1 · 문자로 주문하고 계좌이체 (가장 쉬워요)</h3>
       <p class="small">세 가지만 적고 버튼을 누르면 주문 문자가 준비돼요. 비워 두셔도 문자에 직접 적으실 수 있어요.</p>
       <label class="af"><span>성함</span><input id="oName" type="text" autocomplete="name" placeholder="예: 홍길동"></label>
       <label class="af"><span>받으실 주소</span><input id="oAddr" type="text" autocomplete="street-address" placeholder="예: 경북 청송군 ○○면 ○○길 12"></label>
@@ -764,6 +760,10 @@ a.btn{display:block;text-align:center;text-decoration:none}
         <div class="row"><span class="k">입금 계좌</span><span class="v"><small class="bank">농협</small><span class="nw">010-2033-3586-09</span><small>예금주 유윤자 (자연수정벌)</small></span><button class="mini" type="button" data-copy="농협 010-2033-3586-09" data-label="계좌번호를">복사</button></div>
         <div class="row"><span class="k">입금 금액</span><span class="v" id="payAmt"></span></div>
       </div>
+    </div>
+    <div class="way">
+      <h3>방법 2 · 네이버 스마트스토어</h3>
+      <a class="btn primary" id="go" href="https://smartstore.naver.com/sujungbul/products/4937483529" target="_blank" rel="noopener">스마트스토어에서 구매하기</a>
     </div>
     <div class="actions">
       <button class="btn ghost" id="copy" type="button">주문 내용 복사</button>
@@ -894,7 +894,7 @@ function openSheet(){
   $('#minus').onclick=e=>{e.preventDefault();setQ(qty-1)}; $('#plus').onclick=e=>{e.preventDefault();setQ(qty+1)};
   $('#pick').addEventListener('change',paintHint); $('#minus').addEventListener('click',paintHint); $('#plus').addEventListener('click',paintHint);
   if(!$('#oDate').value||state.lastFirst!==iso(r.list[0].d)){$('#oDate').value=iso(r.list[0].d);state.lastFirst=iso(r.list[0].d);}
-  paintHint(); $('#toast').textContent=''; $('#sheetBg').hidden=false; $('#go').focus();
+  paintHint(); $('#toast').textContent=''; $('#sheetBg').hidden=false; $('#sheetTitle').focus({preventScroll:true});
 }
 function planQty(){const r=state.last;const plan=document.querySelector('input[name=plan]:checked').value;return plan==='first'?r.first:plan==='season'?r.total:qty;}
 function paintHint(){const n=planQty();
