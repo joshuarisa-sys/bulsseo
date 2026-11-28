@@ -428,6 +428,8 @@ a.btn{display:block;text-align:center;text-decoration:none}
 .opt input[type=date],#start{min-height:44px}
 .opt input[type=checkbox]{width:26px;height:26px}
 .crop{word-break:keep-all}
+.prer .pshare{margin-top:8px;font-size:16px;min-height:50px}
+#precheck{scroll-margin-top:12px}
 </style>
 </head>
 <body>
@@ -983,14 +985,14 @@ const SITE='https://www.xn--pk3bm9jywb4p.kr/';
 function shareText(){const r=state.last;
   const head=r?`🐝 ${r.crop.name} ${fmt(Math.round(r.py))}평에는 수정벌 ${r.first}통이 필요해요. (${CFG.intervalDays}일마다 교체)`:'🐝 우리 하우스엔 수정벌 몇 통이 필요할까?';
   return head+'\n작물과 평수만 넣으면 3초 만에 계산돼요.\n벌이 일을 안 할 때 자가진단도 할 수 있어요. 👉 벌써예약';}
-$('#shareBtn').addEventListener('click',async()=>{
-  const text=shareText(), msg=$('#shareMsg');
-  if(navigator.share){try{await navigator.share({title:'벌써예약 3초 수정벌 계산기',text,url:SITE});return;}catch(e){if(e&&e.name==='AbortError')return;}}
-  const all=text+'\n'+SITE;
+async function doShare(title,text,url,msg){
+  if(navigator.share){try{await navigator.share({title,text,url});return;}catch(e){if(e&&e.name==='AbortError')return;}}
+  const all=text+'\n'+url;
   const done=()=>{msg.className='anote ok';msg.textContent='복사했어요. 카카오톡 대화방에 붙여 넣어 보내 주세요.';};
   try{await navigator.clipboard.writeText(all);done();}
   catch(e){const ta=document.createElement('textarea');ta.value=all;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(_){msg.textContent=all;}ta.remove();}
-});
+}
+$('#shareBtn').addEventListener('click',()=>doShare('벌써예약 3초 수정벌 계산기',shareText(),SITE,$('#shareMsg')));
 
 // Self-diagnosis is folded until asked for
 function openDx(scroll){$('#dxSec').hidden=false;$('#dxOpen').setAttribute('aria-expanded','true');$('#dxOpen').textContent='🩺 자가진단 접기';
@@ -1063,10 +1065,16 @@ function paintPre(){
   }
   $('#preOut').innerHTML=warn+rows.map(r=>{const d=backDate(r[2]);const long=/이상/.test(r[2]);
     return `<div class="prer"><b class="nm">${r[0]==='–'?r[1]:r[0]}</b><small>${r[1]}</small>
-      <span class="back">벌통 빼고 뿌린 뒤 <b>${r[2]}</b> 지나서<br>다시 넣는 날: <b>${d.getMonth()+1}월 ${d.getDate()}일(${'일월화수목금토'[d.getDay()]})${long?' 이후':''}</b></span></div>`;}).join('')
+      <span class="back">벌통 빼고 뿌린 뒤 <b>${r[2]}</b> 지나서<br>다시 넣는 날: <b>${d.getMonth()+1}월 ${d.getDate()}일(${'일월화수목금토'[d.getDay()]})${long?' 이후':''}</b></span>
+      <button class="btn primary ablock pshare" type="button" data-nm="${r[0]==='–'?r[1]:r[0]}" data-per="${r[2]}" data-d="${iso(d)}">📤 이웃에게 보내기</button><p class="anote"></p></div>`;}).join('')
     +(PEST[preCrop].bee==='꿀벌'?'<small class="psm">딸기는 꿀벌 기준 자료예요. 뒤영벌도 이 기간을 지켜 주세요.</small>':'');
 }
 buildPre();
+
+$('#preOut').addEventListener('click',e=>{const b=e.target.closest('.pshare');if(!b)return;
+  const d=new Date(b.dataset.d+'T00:00:00'), long=/이상/.test(b.dataset.per);
+  const text=`🐝 ${preCrop}에 ${b.dataset.nm} 뿌리면 ${kd(d)}(${wk(d)})${long?' 이후에':'부터'} 벌 넣어도 돼요. (뿌린 뒤 ${b.dataset.per})\n내 농약도 확인해 보세요 👉 벌써예약`;
+  doShare('벌써예약 농약 확인',text,SITE+'#precheck',b.nextElementSibling);});
 
 // Jump to arrival guide from QR (#arrive or #도착)
 (function(){const h=decodeURIComponent(location.hash||'');if(h==='#arrive'||h==='#도착'){setTimeout(()=>{const el=document.getElementById('arrive');if(el)el.scrollIntoView({block:'start'});},300);}})();
