@@ -465,7 +465,7 @@ a.btn{display:block;text-align:center;text-decoration:none}
     <p class="anote" id="shareMsg">카카오톡이나 문자로 보낼 수 있어요.</p>
   </div>
 
-  <section class="act" aria-label="예약 신청과 교체 알림">
+  <section class="act" aria-label="간편 예약">
     <article class="acard" id="rsv">
       <h2><span class="ai" aria-hidden="true">📅</span>문자로 간편 예약</h2>
       <p class="asub">네 가지만 적고 버튼을 누르면 예약 문자가 준비돼요.</p>
@@ -478,16 +478,6 @@ a.btn{display:block;text-align:center;text-decoration:none}
       <label class="af"><span>받고 싶은 날</span><input id="rDate" type="date"></label>
       <a class="btn green ablock" id="rGo" href="sms:01099843586">문자로 예약 보내기</a>
       <p class="anote" id="rMsg">문자 창이 열리면 <b>보내기</b>만 눌러 주세요. 자연수정벌에서 확인 전화를 드려요.</p>
-    </article>
-
-    <article class="acard" id="rmd">
-      <h2><span class="ai" aria-hidden="true">🔔</span>벌 교체 알림 받기</h2>
-      <p class="asub">벌통 넣은 날을 고르면 바꿀 날을 미리 알려 드려요.</p>
-      <label class="af"><span>벌통 넣은 날</span><input id="mDate" type="date"></label>
-      <div class="adue"><small>벌 바꿀 날</small><b id="mDue">—</b><small id="mDueSub"></small></div>
-      <button class="btn primary ablock" id="mCal" type="button">휴대폰 달력에 알림 저장</button>
-      <a class="btn ghost ablock" id="mSms" href="sms:01099843586">자연수정벌에 알림 문자 부탁하기</a>
-      <p class="anote">달력에 저장하면 교체 3일 전에 휴대폰이 알려 줘요. 문자로 부탁하시면 자연수정벌이 그날 연락드려요.</p>
     </article>
   </section>
 
@@ -944,35 +934,7 @@ $('#rGo').addEventListener('click',e=>{
   $('#rMsg').className='anote';$('#rMsg').innerHTML='문자 창이 열리면 <b>보내기</b>만 눌러 주세요. 자연수정벌에서 확인 전화를 드려요.';
 });
 
-const LEAD=3;
-function due(){const v=$('#mDate').value; if(!v) return null; return addDays(new Date(v+'T00:00:00'),CFG.intervalDays);}
-function paintRmd(){
-  const d=due();
-  $('#mDue').textContent=d?`${kd(d)} (${wk(d)})`:'—';
-  $('#mDueSub').textContent=d?`넣은 날부터 ${CFG.intervalDays}일 뒤`:'';
-  const name=$('#rName').value.trim();
-  const body=['[벌써예약 교체 알림 부탁]',name?`성함: ${name}`:'',`벌통 넣은 날: ${kd(new Date($('#mDate').value+'T00:00:00'))}`,
-    d?`벌 바꿀 날: ${kd(d)}(${wk(d)})`:'', '바꿀 때가 되면 문자 주세요.'].filter(Boolean).join('\n');
-  $('#mSms').href='sms:'+TEL+'?body='+encodeURIComponent(body);
-}
-$('#mDate').value=iso(new Date());
-$('#mDate').addEventListener('input',paintRmd);
-$('#rName').addEventListener('input',paintRmd);
-$('#mCal').addEventListener('click',()=>{
-  const d=due(); if(!d) return;
-  const at=addDays(d,-LEAD), end=addDays(at,1), f=x=>iso(x).replace(/-/g,'');
-  const title='🐝 벌 바꿀 때예요 (자연수정벌)';
-  const desc=`${kd(d)}이 벌통 교체일이에요. 새 벌통을 주문해 주세요.\n문자·전화 010-9984-3586\nhttps://www.xn--pk3bm9jywb4p.kr/`;
-  if(/Android/i.test(navigator.userAgent)){
-    location.href='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(title)+'&dates='+f(at)+'/'+f(end)+'&details='+encodeURIComponent(desc);
-    return;
-  }
-  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//bulsseo//reminder//KO','BEGIN:VEVENT','UID:'+Date.now()+'@bulsseo','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z',
-    'DTSTART;VALUE=DATE:'+f(at),'DTEND;VALUE=DATE:'+f(end),'SUMMARY:'+title,'DESCRIPTION:'+desc.replace(/\n/g,'\\n'),
-    'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+title,'TRIGGER:PT9H','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='벌교체알림.ics';document.body.appendChild(a);a.click();a.remove();
-});
-rsvReady=true; paintRsv(); paintRmd();
+rsvReady=true; paintRsv();
 
 // Self-diagnosis: bees not working
 const DXQ=[
