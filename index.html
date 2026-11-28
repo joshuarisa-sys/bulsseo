@@ -1183,9 +1183,7 @@ function paintPre(){
   const rows=PEST[preCrop].rows.filter(r=>(r[0]+r[1]).replace(/\s/g,'').includes(q)).sort((a,b)=>hrs(b[2])-hrs(a[2])).slice(0,4);
   const warn='<p class="prew">⚠️ 벌이 들어 있는 채로 뿌려도 되는 약은 자료에 없어요. 어떤 약이든 뿌리기 전에 벌통을 먼저 빼 주세요.</p>';
   if(!rows.length){
-    const body=['[벌써예약 농약 문의]',`작목: ${preCrop}`,`약 이름: ${raw}`,'이 약 치려면 벌통을 며칠 빼야 하나요?'].join('\n');
-    $('#preOut').innerHTML=`<div class="prer none"><p><b>‘${raw.replace(/[<>&"]/g,'')}’</b>은(는) ${preCrop} 자료에 없는 약이에요. 짐작으로 뿌리지 마시고 꼭 물어보신 뒤 뿌려 주세요.</p></div>
-      <a class="btn green ablock" href="sms:01099843586?body=${encodeURIComponent(body)}">자연수정벌에 문자로 물어보기</a>
+    $('#preOut').innerHTML=`<div class="prer none"><p><b>‘${raw.replace(/[<>&"]/g,'')}’</b>은(는) ${preCrop} 자료에 없는 약이에요. 짐작으로 뿌리지 마시고 아래 농사로에서 꼭 확인하신 뒤 뿌려 주세요.</p></div>
       <a class="extlink" href="https://www.nongsaro.go.kr/portal/ps/psc/pscc/insectAgchApplcLst.ps?menuId=PS00207" target="_blank" rel="noopener">농사로에서 직접 찾아보기</a>`;
     return;
   }
